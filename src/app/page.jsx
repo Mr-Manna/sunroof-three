@@ -1,21 +1,18 @@
 'use client'
-import Image from "next/image";
-import { createRoot } from 'react-dom/client'
 import React, { useRef, useState,useEffect } from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
+import { Mesh } from 'three'
 
-import { PerspectiveCamera, PositionalAudio } from '@react-three/drei'
+import { PerspectiveCamera } from '@react-three/drei'
 
 
 function Box(props) {
-  // This reference will give us direct access to the mesh
-  const meshRef = useRef()
+  const meshRef = useRef(null);
   useFrame((state, delta) => {
     meshRef.current.rotation.z += delta
     meshRef.current.rotation.y += delta
 
   })
-  // Return view, these are regular three.js elements expressed in JSX
   return (
     <PerspectiveCamera position={[0,0,0]}>
 
@@ -36,7 +33,6 @@ function Box(props) {
 export default function Home() {
   const [height,setHeight] = useState(100)
   const [width,setWidth] = useState(100)
-  const [canvasBackground,setCanvasBackground] = useState('black')
   const [boxWidth,setBoxWidth] = useState(10)
   const [boxHeight,setBoxHeight] = useState(10)
   const [boxLength,setBoxLength] = useState(10)
@@ -51,7 +47,7 @@ export default function Home() {
       })
     } 
 
-  })
+  },[])
 
   const handleBoxHeightChange = (e)=>{
     if(boxHeight === 10) return
@@ -68,31 +64,37 @@ export default function Home() {
     setBoxLength(e.target.value)
   }
 
-  const increaseBoxHeight = (e)=>{
-    boxHeight === 15 ? null : setBoxHeight(boxHeight => boxHeight += 1)
+  const increaseBoxHeight = ()=>{
+    if(boxHeight === 15) return 
+    setBoxHeight(boxHeight => boxHeight += 1)
   }
-  const decreaseBoxHeight = (e)=>{
-    boxHeight === 10 ? null : setBoxHeight(boxHeight => boxHeight -= 1)
-  }
-
-  const increaseBoxWidth = (e)=>{
-    boxWidth === 15 ? null : setBoxWidth(boxWidth => boxWidth += 1)
-  }
-  const decreaseBoxWidth = (e)=>{
-    boxWidth === 10 ? null : setBoxWidth(boxWidth => boxWidth -= 1)
+  const decreaseBoxHeight = ()=>{
+    if(boxHeight === 10 ) return 
+    setBoxHeight(boxHeight => boxHeight -= 1)
   }
 
-  const increaseBoxLength = (e)=>{
-    boxLength === 15 ? null : setBoxLength(boxLength => boxLength += 1)
+  const increaseBoxWidth = ()=>{
+    if(boxWidth === 15 ) return 
+    setBoxWidth(boxWidth => boxWidth += 1)
   }
-  const decreaseBoxLength = (e)=>{
-    boxLength === 10 ? null : setBoxLength(boxLength => boxLength -= 1)
+  const decreaseBoxWidth = ()=>{
+    if(boxWidth === 10 ) return 
+    setBoxWidth(boxWidth => boxWidth -= 1)
+  }
+
+  const increaseBoxLength = ()=>{
+    if(boxLength === 15 ) return 
+    setBoxLength(boxLength => boxLength += 1)
+  }
+  const decreaseBoxLength = ()=>{
+    if(boxLength === 10 ) return 
+    setBoxLength(boxLength => boxLength -= 1)
   }
   
   return (
     <div className="grid grid-cols-[60%_40%] ">
       <div className="min-h-screen">
-      <Canvas className="bg-black">
+      <Canvas className="bg-black" width={width} height={height}>
         <ambientLight intensity={1} />
         <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} decay={0} intensity={Math.PI/4} />
         <pointLight position={[-10, -10, -10]} decay={0} intensity={Math.PI/2} />
