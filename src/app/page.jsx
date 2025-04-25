@@ -3,7 +3,7 @@ import React, { useRef, useState,useEffect } from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
 import { Mesh } from 'three'
 
-import { PerspectiveCamera } from '@react-three/drei'
+import { PerspectiveCamera, OrbitControls } from '@react-three/drei'
 
 
 function Box(props) {
@@ -95,6 +95,7 @@ export default function Home() {
     <div className="grid grid-cols-[60%_40%] ">
       <div className="min-h-screen">
       <Canvas className="bg-black" width={width} height={height}>
+        <OrbitControls/>
         <ambientLight intensity={1} />
         <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} decay={0} intensity={Math.PI/4} />
         <pointLight position={[-10, -10, -10]} decay={0} intensity={Math.PI/2} />
